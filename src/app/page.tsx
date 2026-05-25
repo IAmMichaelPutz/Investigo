@@ -10,7 +10,8 @@ import {
   HelpCircle,
   Cpu,
   RefreshCw,
-  AlertCircle
+  AlertCircle,
+  Globe
 } from 'lucide-react';
 import { Stock, NewsArticle, StockEvent } from '../types';
 import { STOCKS } from '../lib/mock-data';
@@ -19,13 +20,14 @@ import { DCFCalculator } from '../components/dcf-calculator';
 import { EarningsFeed } from '../components/earnings-feed';
 import { UpcomingEvents } from '../components/upcoming-events';
 import { PortfolioManager } from '../components/portfolio-manager';
+import { MacroDashboard } from '../components/macro-dashboard';
 
 export default function Home() {
   const [selectedStock, setSelectedStock] = useState<Stock>(STOCKS[0]);
   const [news, setNews] = useState<NewsArticle[]>([]);
   const [events, setEvents] = useState<StockEvent[]>([]);
   
-  const [activeTab, setActiveTab] = useState<'dcf' | 'news' | 'events' | 'portfolio'>('dcf');
+  const [activeTab, setActiveTab] = useState<'dcf' | 'news' | 'events' | 'portfolio' | 'macro'>('dcf');
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [apiSource, setApiSource] = useState<string>('SANDBOX');
@@ -223,23 +225,30 @@ export default function Home() {
                 <Briefcase className="w-3.5 h-3.5 text-rose-400" />
                 Portfolio Simulator
               </button>
+
+              <button
+                disabled={isLoading}
+                onClick={() => setActiveTab('macro')}
+                className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-lg transition-all shrink-0 ${
+                  activeTab === 'macro' 
+                    ? 'bg-zinc-900 text-white border border-zinc-800 shadow-lg shadow-black/40' 
+                    : 'text-muted-foreground hover:text-white hover:bg-zinc-900/10 disabled:opacity-50'
+                }`}
+              >
+                <Globe className="w-3.5 h-3.5 text-indigo-400" />
+                Macro & Real Estate
+              </button>
             </div>
 
             {/* Tab Visual Contents & Glowing Skeletons */}
             {isLoading ? (
               <div className="space-y-6 animate-pulse-slow">
-                
-                {/* 3 pulsing cards representing top metrics */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="h-32 bg-zinc-900/40 border border-zinc-900 rounded-2xl"></div>
                   <div className="h-32 bg-zinc-900/40 border border-zinc-900 rounded-2xl"></div>
                   <div className="h-32 bg-zinc-900/40 border border-zinc-900 rounded-2xl"></div>
                 </div>
-
-                {/* Big card representing sheet table or charts */}
                 <div className="h-80 bg-zinc-900/30 border border-zinc-900 rounded-2xl"></div>
-
-                {/* Large graph skeleton */}
                 <div className="h-96 bg-zinc-900/30 border border-zinc-900 rounded-2xl"></div>
               </div>
             ) : (
@@ -248,6 +257,7 @@ export default function Home() {
                 {activeTab === 'news' && <EarningsFeed stock={selectedStock} news={news} />}
                 {activeTab === 'events' && <UpcomingEvents stock={selectedStock} events={events} />}
                 {activeTab === 'portfolio' && <PortfolioManager stock={selectedStock} />}
+                {activeTab === 'macro' && <MacroDashboard />}
               </div>
             )}
           </div>

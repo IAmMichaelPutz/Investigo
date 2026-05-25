@@ -100,3 +100,5 @@ export interface PortfolioHolding {
   totalGain: number;
   totalGainPercentage: number;
 }
+
+export * from './macro';
