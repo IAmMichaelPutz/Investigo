@@ -3,17 +3,15 @@
 import React from 'react';
 import { Newspaper, ArrowUp, ArrowDown, ExternalLink } from 'lucide-react';
 import { Stock, NewsArticle } from '../types';
-import { getNewsForStock } from '../lib/mock-data';
 
 interface EarningsFeedProps {
   stock: Stock;
+  news: NewsArticle[];
 }
 
-export function EarningsFeed({ stock }: EarningsFeedProps) {
-  const news = getNewsForStock(stock.symbol);
-
+export function EarningsFeed({ stock, news }: EarningsFeedProps) {
   return (
-    <div className="glass-panel p-6 rounded-2xl border border-border h-full">
+    <div className="glass-panel p-6 rounded-2xl border border-border h-full animate-fade-in">
       <div className="flex items-center gap-2 mb-6">
         <div className="p-2 bg-indigo-500/10 rounded-lg text-indigo-400">
           <Newspaper className="w-5 h-5" />
